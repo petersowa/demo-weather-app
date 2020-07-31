@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDefaultNormalizer } from '@testing-library/react';
+import './App.css';
 
 const data = {
 	States: {
@@ -235,7 +235,18 @@ const data = {
 };
 
 function ExtendedForecast(props) {
-	return <div>extended</div>;
+	console.log(props.forecast);
+	return (
+		<div className="extended">
+			{props.forecast.map((i, index) => (
+				<div className="extended__data" key={index}>
+					<div>{i.Date}</div>
+					<div>Temp: {i.temprature}</div>
+					<div>({i.feels})</div>
+				</div>
+			))}
+		</div>
+	);
 }
 
 function WeatherInfo(props) {
@@ -244,14 +255,21 @@ function WeatherInfo(props) {
 
 	console.log(currentForecast);
 	return (
-		<div>
+		<div className="weather-info">
 			<h2>Weather data for {props.city.name}</h2>
 			<p>Current Temperature: {currentForecast.temprature}</p>
 			<p>Feels Like: {currentForecast.feels}</p>
-			<button onClick={() => setShowExtended(!showExtended)}>
+			<button
+				className="toggle-button"
+				onClick={() => setShowExtended(!showExtended)}
+			>
 				Extended Forecast
 			</button>
-			{showExtended && <ExtendedForecast></ExtendedForecast>}
+			{showExtended && (
+				<ExtendedForecast
+					forecast={props.city.forecast.forecast}
+				></ExtendedForecast>
+			)}
 		</div>
 	);
 }
@@ -264,6 +282,7 @@ class GetCityForm extends React.Component {
 	render() {
 		return (
 			<form
+				className="city-form"
 				onSubmit={(e) => {
 					e.preventDefault();
 					if (this.state.cityName !== '') {
@@ -272,8 +291,9 @@ class GetCityForm extends React.Component {
 					this.setState({ cityName: '' });
 				}}
 			>
-				<label>City Name:</label>
+				<label htmlFor="city-name">City Name: </label>
 				<input
+					id="city-name"
 					type="text"
 					value={this.state.cityName}
 					onChange={(e) => {
@@ -293,7 +313,7 @@ class WeatherApp extends React.Component {
 	getWeatherData(cityName) {
 		for (const state in data.States) {
 			const result = data.States[state].cities.find(
-				(city) => city.name === cityName
+				(city) => city.name.toUpperCase() === cityName.toUpperCase()
 			);
 			if (result) {
 				this.setState({
@@ -305,8 +325,8 @@ class WeatherApp extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<h2>Weather App</h2>
+			<div className="app">
+				<h2 class="app-title">Weather App</h2>
 				<GetCityForm
 					getWeatherInfo={(city) => {
 						this.getWeatherData(city);

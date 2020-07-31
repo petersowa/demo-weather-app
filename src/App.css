@@ -1,39 +1,82 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 .app {
+	max-width: 60ch;
+	margin: auto;
+	padding: 50px 0;
+}
+
+.app-title {
 	text-align: center;
+	margin-bottom: 1em;
+	text-transform: uppercase;
+	margin: 5px;
+	margin-bottom: 10px;
+	box-shadow: 3px 3px 10px 3px rgba(12, 12, 12, 0.05);
+	border-radius: 5px;
+	background-color: #eee;
 }
 
-.App-logo {
-	height: 40vmin;
-	pointer-events: none;
+.city-form {
+	display: flex;
+	width: auto;
+	margin: 5px;
+	padding: 5px;
+	box-shadow: 3px 3px 10px 3px rgba(12, 12, 12, 0.05);
+	border-radius: 5px;
+	align-items: center;
+	/* justify-content: space-evenly; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-	.App-logo {
-		animation: App-logo-spin infinite 20s linear;
-	}
-}
-
-.app-header {
-	min-height: 4ch;
-	font-size: 1.5rem;
-	background-color: #282c34;
+.weather-info {
 	display: flex;
 	flex-direction: column;
+	text-transform: capitalize;
+	width: auto;
+	margin: 5px;
+	padding: 1em 5px;
+	box-shadow: 3px 3px 10px 3px rgba(12, 12, 12, 0.05);
+	border-radius: 5px;
 	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
 }
 
-.App-link {
-	color: #61dafb;
+input {
+	flex-grow: 1;
+	background: rgb(221, 221, 221);
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	padding: 5px;
+	margin-left: 1ch;
 }
 
-@keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+.extended {
+	display: flex;
+	flex-direction: row;
+}
+
+.toggle-button {
+	margin: 10px;
+	box-shadow: 3px 3px 10px 3px rgba(12, 12, 12, 0.05);
+	border: 0;
+	outline: 0;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: orange;
+}
+
+.extended__data {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	margin: 5px;
+	padding: 5px;
+	min-width: 5ch;
+	box-shadow: 3px 3px 10px 3px rgba(12, 12, 12, 0.05);
+	border-radius: 5px;
 }
