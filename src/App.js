@@ -240,9 +240,9 @@ function ExtendedForecast(props) {
 		<div className="extended">
 			{props.forecast.map((i, index) => (
 				<div className="extended__data" key={index}>
-					<div>{i.Date}</div>
-					<div>Temp: {i.temprature}</div>
-					<div>({i.feels})</div>
+					<div>{new Date(i.Date).toLocaleDateString()}</div>
+					<div>Temp: {i.temprature}&#176;</div>
+					<div>Feels: {i.feels}&#176;</div>
 				</div>
 			))}
 		</div>
@@ -257,13 +257,13 @@ function WeatherInfo(props) {
 	return (
 		<div className="weather-info">
 			<h2>Weather data for {props.city.name}</h2>
-			<p>Current Temperature: {currentForecast.temprature}</p>
-			<p>Feels Like: {currentForecast.feels}</p>
+			<p>Current Temperature: {currentForecast.temprature}&#176;</p>
+			<p>Feels Like: {currentForecast.feels}&#176;</p>
 			<button
 				className="toggle-button"
 				onClick={() => setShowExtended(!showExtended)}
 			>
-				Extended Forecast
+				{showExtended ? 'Hide Forecast' : 'Show Forecast'}
 			</button>
 			{showExtended && (
 				<ExtendedForecast
