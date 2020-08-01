@@ -326,7 +326,7 @@ class WeatherApp extends React.Component {
 	render() {
 		return (
 			<div className="app">
-				<h2 class="app-title">Weather App</h2>
+				<h2 className="app-title">Weather App</h2>
 				<GetCityForm
 					getWeatherInfo={(city) => {
 						this.getWeatherData(city);
