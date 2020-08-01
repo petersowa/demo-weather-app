@@ -45,6 +45,16 @@
 	align-items: center;
 }
 
+.weather-info--time {
+	display: flex;
+	flex-direction: column;
+	text-transform: lowercase;
+	font-size: 0.8rem;
+	width: auto;
+	margin: 5px;
+	align-items: center;
+}
+
 input {
 	flex-grow: 1;
 	background: rgb(221, 221, 221);
