@@ -58,6 +58,7 @@ input {
 .extended {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .toggle-button {
