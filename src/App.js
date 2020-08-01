@@ -308,30 +308,42 @@ class GetCityForm extends React.Component {
 class WeatherApp extends React.Component {
 	state = {
 		cityInfo: null,
+		errorText: '',
 	};
 
-	getWeatherData(cityName) {
+	getWeatherData = (cityName) => {
+		let result;
 		for (const state in data.States) {
-			const result = data.States[state].cities.find(
+			result = data.States[state].cities.find(
 				(city) => city.name.toUpperCase() === cityName.toUpperCase()
 			);
-			if (result) {
-				this.setState({
-					cityInfo: { name: cityName, forecast: result },
-				});
-			}
+			if (result) break;
 		}
-	}
+		if (result) {
+			this.setState({
+				cityInfo: { name: cityName, forecast: result },
+			});
+			this.setErrorMessage('');
+		} else {
+			this.setErrorMessage('city not found');
+		}
+	};
+
+	setErrorMessage = (errorText) => {
+		this.setState({ errorText });
+	};
 
 	render() {
 		return (
 			<div className="app">
 				<h2 className="app-title">Weather App</h2>
 				<GetCityForm
-					getWeatherInfo={(city) => {
-						this.getWeatherData(city);
-					}}
+					setError={this.setErrorMessage}
+					getWeatherInfo={this.getWeatherData}
 				></GetCityForm>
+				{this.state.errorText && (
+					<div className="error">{this.state.errorText}</div>
+				)}
 				{this.state.cityInfo && (
 					<WeatherInfo city={this.state.cityInfo}></WeatherInfo>
 				)}
