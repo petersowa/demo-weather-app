@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux';
 
 import './App.css';
 
@@ -24,7 +24,9 @@ function ExtendedForecast(props) {
 }
 
 function WeatherInfo(props) {
-	const [showExtended, setShowExtended] = useState(false);
+	// const [showExtended, setShowExtended] = useState(false);
+	const weather = useSelector((state) => state.weather);
+	const dispatch = useDispatch();
 	const currentForecast = props.city.forecast.forecast[0];
 
 	return (
@@ -38,11 +40,11 @@ function WeatherInfo(props) {
 			</p>
 			<button
 				className="toggle-button"
-				onClick={() => setShowExtended(!showExtended)}
+				onClick={() => dispatch({ type: 'TOGGLE_EXTENDED' })}
 			>
-				{showExtended ? 'Hide Forecast' : 'Show Forecast'}
+				{weather.showExtended ? 'Hide Forecast' : 'Show Forecast'}
 			</button>
-			{showExtended && (
+			{weather.showExtended && (
 				<ExtendedForecast
 					forecast={props.city.forecast.forecast}
 				></ExtendedForecast>
@@ -67,6 +69,7 @@ class _GetCityForm extends React.Component {
 							type: 'GET_CITY',
 							payload: { cityName: this.state.cityName },
 						});
+						this.props.dispatch({ type: 'HIDE_EXTENDED' });
 					}
 					this.setState({ cityName: '' });
 				}}
