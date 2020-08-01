@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// Redux imports
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+
 import './index.css';
 import WeatherApp from './App';
 import * as serviceWorker from './serviceWorker';
 
+// Create Redux store
+const store = createStore(rootReducer);
+
+// Add Redux wrapper
 ReactDOM.render(
 	<React.StrictMode>
-		<WeatherApp />
+		<Provider store={store}>
+			<WeatherApp />
+		</Provider>
 	</React.StrictMode>,
 	document.getElementById('root')
 );

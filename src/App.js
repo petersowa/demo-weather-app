@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+
 import './App.css';
-import data from './data';
+
+const mapStateToProps = (state) => ({
+	weather: state.weather,
+	error: state.error,
+});
 
 function ExtendedForecast(props) {
 	console.log(props.forecast);
@@ -45,7 +51,7 @@ function WeatherInfo(props) {
 	);
 }
 
-class GetCityForm extends React.Component {
+class _GetCityForm extends React.Component {
 	state = {
 		cityName: '',
 	};
@@ -57,7 +63,10 @@ class GetCityForm extends React.Component {
 				onSubmit={(e) => {
 					e.preventDefault();
 					if (this.state.cityName !== '') {
-						this.props.getWeatherInfo(this.state.cityName);
+						this.props.dispatch({
+							type: 'GET_CITY',
+							payload: { cityName: this.state.cityName },
+						});
 					}
 					this.setState({ cityName: '' });
 				}}
@@ -68,6 +77,13 @@ class GetCityForm extends React.Component {
 					type="text"
 					value={this.state.cityName}
 					onChange={(e) => {
+						if (
+							this.props.weather.errorText ||
+							this.props.error.errorText
+						) {
+							console.log('clear errors');
+							this.props.dispatch({ type: 'ERROR_CLEAR' });
+						}
 						this.setState({ cityName: e.target.value });
 					}}
 				></input>
@@ -75,53 +91,33 @@ class GetCityForm extends React.Component {
 		);
 	}
 }
+const GetCityForm = connect(mapStateToProps)(_GetCityForm);
 
 class WeatherApp extends React.Component {
-	state = {
-		cityInfo: null,
-		errorText: '',
-	};
-
-	getWeatherData = (cityName) => {
-		let result;
-		for (const state in data.States) {
-			result = data.States[state].cities.find(
-				(city) => city.name.toUpperCase() === cityName.toUpperCase()
-			);
-			if (result) break;
-		}
-		if (result) {
-			this.setState({
-				cityInfo: { name: cityName, forecast: result },
-			});
-			this.setErrorMessage('');
-		} else {
-			this.setErrorMessage('city not found');
-			this.setState({ cityInfo: null });
-		}
-	};
-
 	setErrorMessage = (errorText) => {
 		this.setState({ errorText });
 	};
 
+	componentDidMount() {
+		console.log(this.props);
+	}
+
 	render() {
+		const errorText =
+			this.props.weather.errorText || this.props.error.errorText;
 		return (
 			<div className="app">
 				<h2 className="app-title">Weather App</h2>
-				<GetCityForm
-					setError={this.setErrorMessage}
-					getWeatherInfo={this.getWeatherData}
-				></GetCityForm>
-				{this.state.errorText && (
-					<div className="error">{this.state.errorText}</div>
-				)}
-				{this.state.cityInfo && (
-					<WeatherInfo city={this.state.cityInfo}></WeatherInfo>
+				<GetCityForm></GetCityForm>
+				{errorText && <div className="error">{errorText}</div>}
+				{this.props.weather.cityInfo && (
+					<WeatherInfo
+						city={this.props.weather.cityInfo}
+					></WeatherInfo>
 				)}
 			</div>
 		);
 	}
 }
 
-export default WeatherApp;
+export default connect(mapStateToProps)(WeatherApp);
